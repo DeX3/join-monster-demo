@@ -11,6 +11,7 @@ import joinMonster from 'join-monster'
 import knex from './database'
 import dbCall from '../data/fetch'
 import User from './User'
+import Authored from './Authored'
 
 export default new GraphQLObjectType({
   description: 'global query object',
@@ -41,6 +42,14 @@ export default new GraphQLObjectType({
       },
       resolve: (parent, args, context, resolveInfo) => {
         return joinMonster(resolveInfo, context, sql => dbCall(sql, knex, context))
+      }
+    },
+    
+    postsOrComments: {
+      type: Authored,
+      args: {},
+      resolve: (parent, args, context, resolveInfo) => {
+        return joinMonster(resolveInfo, context, sql => dbCall(sql, knex, context));
       }
     }
   })
